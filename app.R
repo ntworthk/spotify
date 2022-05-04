@@ -11,7 +11,11 @@ ui <- fillPage(
   htmlOutput("album_art"),
   textOutput("track_title"),
   textOutput("artist"),
-  textOutput("album")
+  textOutput("album"),
+  actionButton("previ", "⏮"),
+  actionButton("start", "▶️"),
+  actionButton("pause", "⏸"),
+  actionButton("nexti", "⏭")
   
 )
 
@@ -31,6 +35,11 @@ server <- function(input, output, session) {
   output$track_title <- renderText(x()[["item.name"]])
   output$artist <- renderText(paste0(na.omit(x()[c("item.artists.name", "item.artists.name1", "item.artists.name2")]), collapse = ", "))
   output$album <- renderText(x()[["item.album.name"]])
+  
+  observeEvent(input$previ, {try(skip_my_playback())})
+  observeEvent(input$start, {try(start_my_playback())})
+  observeEvent(input$pause, {try(pause_my_playback())})
+  observeEvent(input$nexti, {try(skip_my_playback_previous())})
   
 }
 
