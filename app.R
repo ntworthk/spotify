@@ -47,7 +47,8 @@ get_now_playing <- function() {
 ui <- fillPage(
   
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "main.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "main.css"),
+    tags$title("nwbort on Spotify")
   ),
   htmlOutput("album_art"),
   textOutput("track_title"),
