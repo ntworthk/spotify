@@ -65,9 +65,9 @@ ui <- fillPage(
 server <- function(input, output, session) {
   
   x <- reactivePoll(
-    intervalMillis = 3000,
+    intervalMillis = 5000,
     session = session, 
-    checkFunc = get_now_playing,
+    checkFunc = Sys.time,
     valueFunc = get_now_playing)
   
   
