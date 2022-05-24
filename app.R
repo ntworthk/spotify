@@ -38,7 +38,7 @@ get_now_playing <- function() {
                     flatten = TRUE)
   }
   
-  unlist(res)[c("item.name", "item.artists.name", "item.artists.name1", "item.artists.name2", "item.album.name", "item.album.images.url1", "is_playing", "item.external_urls.spotify")]
+  unlist(res)[c("item.name", "item.artists.name", "item.artists.name1", "item.artists.name2", "item.album.name", "item.album.images.url1", "is_playing", "item.external_urls.spotify", "item.album.uri")]
 
 }
 
@@ -71,7 +71,7 @@ server <- function(input, output, session) {
     valueFunc = get_now_playing)
   
   
-  output$album_art <- renderText({c('<a href="',x()["item.external_urls.spotify"],'" target="_blank"><img width="40%" src="',x()[["item.album.images.url1"]],'"></a>')})
+  output$album_art <- renderText({c('<a href="',paste0("https://open.spotify.com/", gsub(pattern = ":", replacement = "/", x = gsub(x = x()["item.album.uri"], pattern = "spotify:", replacement = ""))),'" target="_blank"><img width="40%" src="',x()[["item.album.images.url1"]],'"></a>')})
   output$track_title <- renderText(x()[["item.name"]])
   output$artist <- renderText(paste0(na.omit(x()[c("item.artists.name", "item.artists.name1", "item.artists.name2")]), collapse = ", "))
   output$album <- renderText(x()[["item.album.name"]])
