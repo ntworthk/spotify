@@ -1,4 +1,3 @@
 library(shiny)
 options(shiny.port = 5522)
-runApp('app.R')
-
+runApp(file.path(this.path::here(), "app.R"))
