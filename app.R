@@ -2,6 +2,7 @@
 library(shiny)
 library(httr)
 library(jsonlite)
+options(httr_oob_default = TRUE)
 
 get_spotify_authorization_code <- function() {
   
