@@ -71,7 +71,7 @@ start_my_playback <- function(device_id = NULL, context_uri = NULL, uris = NULL,
 get_now_playing <- function() {
   authorization <- get_spotify_authorization_code()
   base_url <- "https://api.spotify.com/v1/me/player/currently-playing"
-  params <- list(market = NULL)
+  params <- list(market = NULL, additional_types = "episode")
   res <- RETRY("GET", base_url, config(token = authorization), 
                query = params, encode = "json")
   stop_for_status(res)
@@ -100,6 +100,32 @@ get_now_playing <- function() {
   } else {
     res <- fromJSON(content(res, as = "text", encoding = "UTF-8"), 
                     flatten = TRUE)
+    
+    if (res$currently_playing_type == "episode") {
+
+      # reformat into style of song
+      res <- list(
+        item = list(
+          name = res$item$name,
+          artists = list(
+            name = res$item$show$publisher
+          ),
+          album = list(
+            name = res$item$show$name,
+            images = list(
+              url = res$item$show$images$url
+            ),
+            uri = res$item$show$uri
+          ),
+          external_urls = list(
+            spotify = res$item$external_urls$spotify
+          )
+        ),
+        is_playing = res$is_playing
+      )
+      
+    }
+    
   }
   
   unlist(res)[c("item.name", "item.artists.name", "item.artists.name1", "item.artists.name2", "item.album.name", "item.album.images.url1", "is_playing", "item.external_urls.spotify", "item.album.uri")]
