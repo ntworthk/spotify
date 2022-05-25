@@ -132,7 +132,7 @@ server <- function(input, output, session) {
   x <- reactivePoll(
     intervalMillis = 5000,
     session = session, 
-    checkFunc = Sys.time,
+    checkFunc = get_now_playing,
     valueFunc = get_now_playing)
   
   
