@@ -55,7 +55,6 @@ pause_my_playback <- function(device_id = NULL, authorization = get_spotify_auth
 start_my_playback <- function(device_id = NULL, context_uri = NULL, uris = NULL, 
                                offset = NULL, position_ms = NULL, authorization = get_spotify_authorization_code()) 
 {
-  validate_parameters(offset = offset, position_ms = position_ms)
   base_url <- "https://api.spotify.com/v1/me/player/play"
   query_params = list(device_id = device_id)
   body_params <- list(context_uri = context_uri, uris = uris, 
@@ -130,7 +129,7 @@ ui <- fillPage(
 server <- function(input, output, session) {
   
   x <- reactivePoll(
-    intervalMillis = 5000,
+    intervalMillis = 2000,
     session = session, 
     checkFunc = get_now_playing,
     valueFunc = get_now_playing)
