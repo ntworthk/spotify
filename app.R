@@ -71,7 +71,7 @@ start_my_playback <- function(device_id = NULL, context_uri = NULL, uris = NULL,
 get_now_playing <- function() {
   authorization <- get_spotify_authorization_code()
   base_url <- "https://api.spotify.com/v1/me/player/currently-playing"
-  params <- list(market = NULL)
+  params <- list(market = NULL, additional_types = "episode")
   res <- RETRY("GET", base_url, config(token = authorization), 
                query = params, encode = "json")
   stop_for_status(res)
