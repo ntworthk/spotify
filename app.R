@@ -22,6 +22,52 @@ get_spotify_authorization_code <- function() {
   }
 }
 
+skip_my_playback_previous <- function(device_id = NULL, authorization = get_spotify_authorization_code()) 
+{
+  base_url <- "https://api.spotify.com/v1/me/player/previous"
+  params <- list(device_id = device_id)
+  res <- RETRY("POST", base_url, config(token = authorization), 
+               query = params, encode = "json")
+  stop_for_status(res)
+  res
+}
+
+skip_my_playback <- function(device_id = NULL, authorization = get_spotify_authorization_code()) 
+{
+  base_url <- "https://api.spotify.com/v1/me/player/next"
+  params <- list(device_id = device_id)
+  res <- RETRY("POST", base_url, config(token = authorization), 
+               query = params, encode = "json")
+  stop_for_status(res)
+  res
+}
+
+pause_my_playback <- function(device_id = NULL, authorization = get_spotify_authorization_code()) 
+{
+  base_url <- "https://api.spotify.com/v1/me/player/pause"
+  params <- list(device_id = device_id)
+  res <- RETRY("PUT", base_url, config(token = authorization), 
+               query = params, encode = "json")
+  stop_for_status(res)
+  res
+}
+
+start_my_playback <- function(device_id = NULL, context_uri = NULL, uris = NULL, 
+                               offset = NULL, position_ms = NULL, authorization = get_spotify_authorization_code()) 
+{
+  validate_parameters(offset = offset, position_ms = position_ms)
+  base_url <- "https://api.spotify.com/v1/me/player/play"
+  query_params = list(device_id = device_id)
+  body_params <- list(context_uri = context_uri, uris = uris, 
+                      offset = offset, position_ms = position_ms)
+  res <- RETRY("PUT", base_url, query = query_params, config(token = authorization), 
+               body = body_params, encode = "json")
+  stop_for_status(res)
+  res
+}
+
+
+
 
 get_now_playing <- function() {
   authorization <- get_spotify_authorization_code()
