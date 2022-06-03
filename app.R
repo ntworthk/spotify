@@ -89,7 +89,8 @@ get_now_playing <- function() {
           name = "",
           images = list(
             url1 = ""
-          )
+          ),
+          uri = ""
         ),
         is_playing = "FALSE",
         external_urls = list(
